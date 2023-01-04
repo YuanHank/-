@@ -30,7 +30,7 @@ class HashTable:
         self.size = size
         self.values = [None] * size
         self.length = 0
-        
+
     def hash(self, key, size):
         hashCode = 0
         for i in range(len(key)):

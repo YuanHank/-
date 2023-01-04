@@ -1,35 +1,76 @@
 #Hash Table
 class Node:
     def __init__(self, key=None, data=None):
-
+        self.value = {} #使用dictionary 建立在這個node裡面的的對應值
+        self.value[key] = data
+        self.next = None #預設next為沒有東西
     def __repr__(self):
         return str(self.data)
 
 class LinkedList:
     def __init__(self, head=None):
-
+        self.head = head 
+        self.next = None
+        self.count = 0
 
     def __str__(self):
-
+        str_list = []
+        current = self.head
+        while current:
+            str_list.append(str(current.value))
+            current = current.next
+        return "[" + "->".join(str_list) + "]"
 
     def __repr__(self):
         return str(self)
 
 class HashTable:
     def __init__(self, size):
-
+        self.size = size 
+        self.length = 0
+        self.values = [None] * size
         
-    def hash(self, key, size):
 
+    def hash(self, key, size): #用來計算對應到的雜湊值，這邊採用與雜湊表大小取mod的方式
+        hashCode = 0
+        for i in range(len(key)):
+            hashCode += ord(key[i])  #將輸入key值得每個字母轉換成ACII後做加總
+        return hashCode % size # 取hashCode 值為與現在hashtable大小取mod
 
     def add(self, key, value):
+        code = self.hash(key,self.size)
+        node = Node(key = key,data = value)
+        if not self.values[code]:
+            self.values[code] = LinkedList(head = node)
 
+        else:
+            current = self.values[code].head #先指定現在的指標指在Linked的第一個head上
+            while current.next:
+                current = current.next # 如過head的那個node指向的next有值，則往後推移
+            current.next = node #直到最後node的next沒有值時候才串接在後頭
+        self.values[code].count +=1 #linked list紀錄現在上面有幾個數據
+        self.length +=1 # 紀錄表內總共有幾個數據
+        return
 
     def search(self, key):
-
+        code = self.hash(key,self.size)
+        current = self.values[code].head
+        while current.next:
+            if key in current.value:
+                return (current.value)
+            else:
+                current  = current.next
+        return "Data not found"
 
     def remove(self, key):
-
+        code = self.hash(key,self.size)
+        current = self.values[code].head
+        while current.next:
+            if key in current.next.value:
+                current.next = current.next.next
+                return('Data was deleted successfully	')
+            current = current.next
+        return
 
     def __repr__(self):
         return str(self.values)
