@@ -44,7 +44,7 @@ class HashTable:
             self.values[code] = LinkedList(head = node)
 
         else:
-            current = self.values[code].head #先指定現在的指標指在Linked的第一個head上
+            current = self.values[code].head #先指定現在的指標指在對應雜湊值位置的Linked的第一個head上
             while current.next:
                 current = current.next # 如過head的那個node指向的next有值，則往後推移
             current.next = node #直到最後node的next沒有值時候才串接在後頭
@@ -53,22 +53,22 @@ class HashTable:
         return
 
     def search(self, key):
-        code = self.hash(key,self.size)
-        current = self.values[code].head
-        while current.next:
-            if key in current.value:
+        code = self.hash(key,self.size) #先查找雜湊值
+        current = self.values[code].head #將現在指標放在對應雜湊值位置的Linked的第一個head上
+        while current.next: 
+            if key in current.value: #如果現在位置內有輸入的key，則返回所對應的key 以及value //這邊的程式碼內的current.value為node內所定義的value與dictionary的不同
                 return (current.value)
             else:
                 current  = current.next
         return "Data not found"
 
     def remove(self, key):
-        code = self.hash(key,self.size)
-        current = self.values[code].head
+        code = self.hash(key,self.size) #先查找雜湊值
+        current = self.values[code].head #將現在指標放在對應雜湊值位置的Linked的第一個head上
         while current.next:
-            if key in current.next.value:
+            if key in current.next.value: #如果現在位置的下一個node內有輸入的key，則將現在位置的next指標指向原本下一個node的next位置//這邊的程式碼內的current.value為node內所定義的value與dictionary的不同
                 current.next = current.next.next
-                return('Data was deleted successfully	')
+                return('Data was deleted successfully')
             current = current.next
         return
 
